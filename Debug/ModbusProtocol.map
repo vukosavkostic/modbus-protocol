@@ -170,7 +170,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x344
+.text           0x00000000      0x76e
  *(.vectors)
  .vectors       0x00000000      0x1f4 D:/MicrochipStudio/7.0/Packs/atmel/XMEGAA_DFP/1.2.141/gcc/dev/atxmega128a1/avrxmega7/crtatxmega128a1.o
                 0x00000000                __vector_default
@@ -234,7 +234,6 @@ END GROUP
                 0x00000224                __vector_28
                 0x00000224                __vector_67
                 0x00000224                __vector_1
-                0x00000224                __vector_119
                 0x00000224                __vector_32
                 0x00000224                __vector_75
                 0x00000224                __vector_71
@@ -325,7 +324,6 @@ END GROUP
                 0x00000224                __vector_83
                 0x00000224                __vector_29
                 0x00000224                __vector_60
-                0x00000224                __vector_121
                 0x00000224                __vector_40
                 0x00000224                __vector_85
                 0x00000224                __vector_94
@@ -354,28 +352,58 @@ END GROUP
                 0x00000224                __vector_120
                 0x00000228                . = ALIGN (0x2)
  *(.text.*)
- .text.usart_setup
-                0x00000228       0x28 main.o
-                0x00000228                usart_setup
+ .text.__vector_119
+                0x00000228       0xac main.o
+                0x00000228                __vector_119
+ .text.__vector_121
+                0x000002d4       0xa4 main.o
+                0x000002d4                __vector_121
  .text.clock_setup
-                0x00000250       0x3e main.o
-                0x00000250                clock_setup
- .text.recive_data
-                0x0000028e       0x4c main.o
-                0x0000028e                recive_data
- .text.send_data
-                0x000002da       0x38 main.o
-                0x000002da                send_data
- .text.usart_rx_tx
-                0x00000312       0x20 main.o
-                0x00000312                usart_rx_tx
- .text.main     0x00000332        0xe main.o
-                0x00000332                main
-                0x00000340                . = ALIGN (0x2)
+                0x00000378       0x3e main.o
+                0x00000378                clock_setup
+ .text.interrupt_setup
+                0x000003b6        0xa main.o
+                0x000003b6                interrupt_setup
+ .text.usart_setup
+                0x000003c0       0x2a main.o
+                0x000003c0                usart_setup
+ .text.convert_mess_to_ascii
+                0x000003ea       0x38 main.o
+                0x000003ea                convert_mess_to_ascii
+ .text.convert_8bit
+                0x00000422       0x58 main.o
+                0x00000422                convert_8bit
+ .text.convert_16bit
+                0x0000047a       0x2e main.o
+                0x0000047a                convert_16bit
+ .text.parse_modbus_data
+                0x000004a8       0x5e main.o
+                0x000004a8                parse_modbus_data
+ .text.mess_len
+                0x00000506       0x18 main.o
+                0x00000506                mess_len
+ .text.lrc_calc2
+                0x0000051e       0x24 main.o
+                0x0000051e                lrc_calc2
+ .text.lrc_check
+                0x00000542       0x34 main.o
+                0x00000542                lrc_check
+ .text.modbus_function3
+                0x00000576       0x52 main.o
+                0x00000576                modbus_function3
+ .text.modbus_get_result
+                0x000005c8       0x18 main.o
+                0x000005c8                modbus_get_result
+ .text.modbus_process
+                0x000005e0      0x13a main.o
+                0x000005e0                modbus_process
+ .text.main     0x0000071a       0x50 main.o
+                0x0000071a                main
+                0x0000076a                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000340        0x0 d:/microchipstudio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega7\libgcc.a(_exit.o)
-                0x00000340                _exit
-                0x00000340                exit
+ .fini9         0x0000076a        0x0 d:/microchipstudio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega7\libgcc.a(_exit.o)
+                0x0000076a                _exit
+                0x0000076a                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -394,11 +422,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000340        0x4 d:/microchipstudio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega7\libgcc.a(_exit.o)
+ .fini0         0x0000076a        0x4 d:/microchipstudio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega7\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000344                _etext = .
+                0x0000076e                _etext = .
 
-.data           0x00802000        0x0 load address 0x00000344
+.data           0x00802000        0x0 load address 0x0000076e
                 [!provide]                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -410,27 +438,32 @@ END GROUP
                 0x00802000                _edata = .
                 [!provide]                PROVIDE (__data_end, .)
 
-.bss            0x00802000       0x18
+.bss            0x00802000       0x1b
                 0x00802000                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
- .bss.i         0x00802000        0x1 main.o
+ .bss.transmit_i
+                0x00802000        0x1 main.o
+ .bss.sendData  0x00802001        0x1 main.o
  .bss.modbusDataPok
-                0x00802001        0x2 main.o
+                0x00802002        0x2 main.o
+ .bss.dataLength
+                0x00802004        0x1 main.o
  .bss.dataRecived
-                0x00802003        0x1 main.o
+                0x00802005        0x1 main.o
  .bss.modbusData
-                0x00802004       0x14 main.o
+                0x00802006       0x14 main.o
+ .bss.i         0x0080201a        0x1 main.o
  *(COMMON)
-                0x00802018                PROVIDE (__bss_end, .)
-                0x00000344                __data_load_start = LOADADDR (.data)
-                0x00000344                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0080201b                PROVIDE (__bss_end, .)
+                0x0000076e                __data_load_start = LOADADDR (.data)
+                0x0000076e                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00802018        0x0
+.noinit         0x0080201b        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00802018                _end = .
+                0x0080201b                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -495,42 +528,42 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0x48
+.debug_aranges  0x00000000       0x98
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x48 main.o
+                0x00000000       0x98 main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x394c
+.debug_info     0x00000000     0x4063
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x354c D:/MicrochipStudio/7.0/Packs/atmel/XMEGAA_DFP/1.2.141/gcc/dev/atxmega128a1/avrxmega7/crtatxmega128a1.o
- .debug_info    0x0000354c      0x400 main.o
+ .debug_info    0x0000354c      0xb17 main.o
 
-.debug_abbrev   0x00000000     0x33d5
+.debug_abbrev   0x00000000     0x3549
  *(.debug_abbrev)
  .debug_abbrev  0x00000000     0x327a D:/MicrochipStudio/7.0/Packs/atmel/XMEGAA_DFP/1.2.141/gcc/dev/atxmega128a1/avrxmega7/crtatxmega128a1.o
- .debug_abbrev  0x0000327a      0x15b main.o
+ .debug_abbrev  0x0000327a      0x2cf main.o
 
-.debug_line     0x00000000      0x5f3
+.debug_line     0x00000000      0x94f
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x3a9 D:/MicrochipStudio/7.0/Packs/atmel/XMEGAA_DFP/1.2.141/gcc/dev/atxmega128a1/avrxmega7/crtatxmega128a1.o
- .debug_line    0x000003a9      0x24a main.o
+ .debug_line    0x000003a9      0x5a6 main.o
 
-.debug_frame    0x00000000       0x74
+.debug_frame    0x00000000      0x1fc
  *(.debug_frame)
- .debug_frame   0x00000000       0x74 main.o
+ .debug_frame   0x00000000      0x1fc main.o
 
-.debug_str      0x00000000     0x26a7
+.debug_str      0x00000000     0x28f0
  *(.debug_str)
  .debug_str     0x00000000     0x23b9 D:/MicrochipStudio/7.0/Packs/atmel/XMEGAA_DFP/1.2.141/gcc/dev/atxmega128a1/avrxmega7/crtatxmega128a1.o
- .debug_str     0x000023b9      0x2ee main.o
-                                0x333 (size before relaxing)
+ .debug_str     0x000023b9      0x537 main.o
+                                0x59a (size before relaxing)
 
-.debug_loc      0x00000000       0x13
+.debug_loc      0x00000000      0xb16
  *(.debug_loc)
- .debug_loc     0x00000000       0x13 main.o
+ .debug_loc     0x00000000      0xb16 main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -550,9 +583,9 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0x38
+.debug_ranges   0x00000000       0x88
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x38 main.o
+ .debug_ranges  0x00000000       0x88 main.o
 
 .debug_macro
  *(.debug_macro)

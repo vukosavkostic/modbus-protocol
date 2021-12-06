@@ -3,31 +3,31 @@ ModbusProtocol.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000344  00000000  00000000  00000074  2**1
+  0 .text         0000076e  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000000  00802000  00802000  000003b8  2**0
+  1 .data         00000000  00802000  00802000  000007e2  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000018  00802000  00802000  000003b8  2**0
+  2 .bss          0000001b  00802000  00802000  000007e2  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000003b8  2**0
+  3 .comment      00000030  00000000  00000000  000007e2  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000003e8  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000814  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000048  00000000  00000000  00000428  2**0
+  5 .debug_aranges 00000098  00000000  00000000  00000854  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000394c  00000000  00000000  00000470  2**0
+  6 .debug_info   00004063  00000000  00000000  000008ec  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000033d5  00000000  00000000  00003dbc  2**0
+  7 .debug_abbrev 00003549  00000000  00000000  0000494f  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000005f3  00000000  00000000  00007191  2**0
+  8 .debug_line   0000094f  00000000  00000000  00007e98  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000074  00000000  00000000  00007784  2**2
+  9 .debug_frame  000001fc  00000000  00000000  000087e8  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000026a7  00000000  00000000  000077f8  2**0
+ 10 .debug_str    000028f0  00000000  00000000  000089e4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000013  00000000  00000000  00009e9f  2**0
+ 11 .debug_loc    00000b16  00000000  00000000  0000b2d4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000038  00000000  00000000  00009eb2  2**0
+ 12 .debug_ranges 00000088  00000000  00000000  0000bdea  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -152,9 +152,9 @@ Disassembly of section .text:
  1d0:	0c 94 12 01 	jmp	0x224	; 0x224 <__bad_interrupt>
  1d4:	0c 94 12 01 	jmp	0x224	; 0x224 <__bad_interrupt>
  1d8:	0c 94 12 01 	jmp	0x224	; 0x224 <__bad_interrupt>
- 1dc:	0c 94 12 01 	jmp	0x224	; 0x224 <__bad_interrupt>
+ 1dc:	0c 94 14 01 	jmp	0x228	; 0x228 <__vector_119>
  1e0:	0c 94 12 01 	jmp	0x224	; 0x224 <__bad_interrupt>
- 1e4:	0c 94 12 01 	jmp	0x224	; 0x224 <__bad_interrupt>
+ 1e4:	0c 94 6a 01 	jmp	0x2d4	; 0x2d4 <__vector_121>
  1e8:	0c 94 12 01 	jmp	0x224	; 0x224 <__bad_interrupt>
  1ec:	0c 94 12 01 	jmp	0x224	; 0x224 <__bad_interrupt>
  1f0:	0c 94 12 01 	jmp	0x224	; 0x224 <__bad_interrupt>
@@ -183,239 +183,1117 @@ Disassembly of section .text:
  214:	1d 92       	st	X+, r1
 
 00000216 <.do_clear_bss_start>:
- 216:	a8 31       	cpi	r26, 0x18	; 24
+ 216:	ab 31       	cpi	r26, 0x1B	; 27
  218:	b2 07       	cpc	r27, r18
  21a:	e1 f7       	brne	.-8      	; 0x214 <.do_clear_bss_loop>
- 21c:	0e 94 99 01 	call	0x332	; 0x332 <main>
- 220:	0c 94 a0 01 	jmp	0x340	; 0x340 <_exit>
+ 21c:	0e 94 8d 03 	call	0x71a	; 0x71a <main>
+ 220:	0c 94 b5 03 	jmp	0x76a	; 0x76a <_exit>
 
 00000224 <__bad_interrupt>:
  224:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
-00000228 <usart_setup>:
+00000228 <__vector_119>:
 
-void usart_setup(void)
-{
-	//1 start bit, 7 bits, odd parity, 1 stop bit, 9600 baud rate
+/* 
+Funkcionalnosti prekida su odradjene u naredne dve funkcije
+*/
+
+ISR(USARTF0_RXC_vect) {
+ 228:	1f 92       	push	r1
+ 22a:	0f 92       	push	r0
+ 22c:	0f b6       	in	r0, 0x3f	; 63
+ 22e:	0f 92       	push	r0
+ 230:	11 24       	eor	r1, r1
+ 232:	08 b6       	in	r0, 0x38	; 56
+ 234:	0f 92       	push	r0
+ 236:	18 be       	out	0x38, r1	; 56
+ 238:	0a b6       	in	r0, 0x3a	; 58
+ 23a:	0f 92       	push	r0
+ 23c:	1a be       	out	0x3a, r1	; 58
+ 23e:	0b b6       	in	r0, 0x3b	; 59
+ 240:	0f 92       	push	r0
+ 242:	1b be       	out	0x3b, r1	; 59
+ 244:	2f 93       	push	r18
+ 246:	3f 93       	push	r19
+ 248:	8f 93       	push	r24
+ 24a:	9f 93       	push	r25
+ 24c:	ef 93       	push	r30
+ 24e:	ff 93       	push	r31
+ 250:	cf 93       	push	r28
+ 252:	df 93       	push	r29
+ 254:	1f 92       	push	r1
+ 256:	cd b7       	in	r28, 0x3d	; 61
+ 258:	de b7       	in	r29, 0x3e	; 62
 	
-	PORTF.OUTSET = PIN3_bm;			//Set TxF0 pin High
- 228:	e0 ea       	ldi	r30, 0xA0	; 160
- 22a:	f6 e0       	ldi	r31, 0x06	; 6
- 22c:	88 e0       	ldi	r24, 0x08	; 8
- 22e:	85 83       	std	Z+5, r24	; 0x05
-	PORTF.DIRSET = PIN3_bm;			// PF3 (TXF0) as output.
- 230:	81 83       	std	Z+1, r24	; 0x01
-	PORTF.DIRCLR = PIN2_bm;			// PF2 (RXF0) as input.
- 232:	84 e0       	ldi	r24, 0x04	; 4
- 234:	82 83       	std	Z+2, r24	; 0x02
-	USARTF0.CTRLA=0;
- 236:	e0 ea       	ldi	r30, 0xA0	; 160
- 238:	fb e0       	ldi	r31, 0x0B	; 11
- 23a:	13 82       	std	Z+3, r1	; 0x03
-	USARTF0_CTRLB = 0x18; //Transmit, Recive enable
- 23c:	88 e1       	ldi	r24, 0x18	; 24
- 23e:	80 93 a4 0b 	sts	0x0BA4, r24	; 0x800ba4 <__TEXT_REGION_LENGTH__+0x7deba4>
-			Asinhroni, odd, 1 stop, 7 bita
-			Asinhroni, even, 2 stop, 7 bita
-			Asinhroni, even, 1 stop, 8 bita
+	uint8_t data = 0;
 
-	*/
-	USARTF0_CTRLC = 0x03; //Asinhroni, no parity, 8 bita, 1 stop bit
- 242:	83 e0       	ldi	r24, 0x03	; 3
- 244:	80 93 a5 0b 	sts	0x0BA5, r24	; 0x800ba5 <__TEXT_REGION_LENGTH__+0x7deba5>
+	register8_t saved_sreg = SREG;
+ 25a:	8f b7       	in	r24, 0x3f	; 63
+ 25c:	89 83       	std	Y+1, r24	; 0x01
+	cli();
+ 25e:	f8 94       	cli
 
-	//Baud rate setup
-	USARTF0.BAUDCTRLB = 0x00; //BScale = 0
- 248:	17 82       	std	Z+7, r1	; 0x07
-	USARTF0.BAUDCTRLA=13; //BSel = 13	
- 24a:	8d e0       	ldi	r24, 0x0D	; 13
- 24c:	86 83       	std	Z+6, r24	; 0x06
- 24e:	08 95       	ret
+	data = USARTF0.DATA;
+ 260:	90 91 a0 0b 	lds	r25, 0x0BA0	; 0x800ba0 <__TEXT_REGION_LENGTH__+0x7deba0>
 
-00000250 <clock_setup>:
+	if(data == ':')
+ 264:	9a 33       	cpi	r25, 0x3A	; 58
+ 266:	59 f4       	brne	.+22     	; 0x27e <__vector_119+0x56>
+	{
+		i = 0;
+ 268:	10 92 1a 20 	sts	0x201A, r1	; 0x80201a <i>
+		dataRecived = 0;
+ 26c:	10 92 05 20 	sts	0x2005, r1	; 0x802005 <dataRecived>
+		modbusDataPok = modbusData;
+ 270:	26 e0       	ldi	r18, 0x06	; 6
+ 272:	30 e2       	ldi	r19, 0x20	; 32
+ 274:	20 93 02 20 	sts	0x2002, r18	; 0x802002 <modbusDataPok>
+ 278:	30 93 03 20 	sts	0x2003, r19	; 0x802003 <modbusDataPok+0x1>
+ 27c:	0b c0       	rjmp	.+22     	; 0x294 <__vector_119+0x6c>
+	}
+
+	else if(data == 10)
+ 27e:	9a 30       	cpi	r25, 0x0A	; 10
+ 280:	49 f4       	brne	.+18     	; 0x294 <__vector_119+0x6c>
+	{
+		dataRecived = 1;
+ 282:	81 e0       	ldi	r24, 0x01	; 1
+ 284:	80 93 05 20 	sts	0x2005, r24	; 0x802005 <dataRecived>
+		modbusData[i] =  data;
+ 288:	e0 91 1a 20 	lds	r30, 0x201A	; 0x80201a <i>
+ 28c:	f0 e0       	ldi	r31, 0x00	; 0
+ 28e:	ea 5f       	subi	r30, 0xFA	; 250
+ 290:	ff 4d       	sbci	r31, 0xDF	; 223
+ 292:	90 83       	st	Z, r25
+	}
+
+	modbusData[i] = data;
+ 294:	80 91 1a 20 	lds	r24, 0x201A	; 0x80201a <i>
+ 298:	e8 2f       	mov	r30, r24
+ 29a:	f0 e0       	ldi	r31, 0x00	; 0
+ 29c:	ea 5f       	subi	r30, 0xFA	; 250
+ 29e:	ff 4d       	sbci	r31, 0xDF	; 223
+ 2a0:	90 83       	st	Z, r25
+	i++;
+ 2a2:	8f 5f       	subi	r24, 0xFF	; 255
+ 2a4:	80 93 1a 20 	sts	0x201A, r24	; 0x80201a <i>
+	
+	SREG = saved_sreg;
+ 2a8:	89 81       	ldd	r24, Y+1	; 0x01
+ 2aa:	8f bf       	out	0x3f, r24	; 63
+}
+ 2ac:	0f 90       	pop	r0
+ 2ae:	df 91       	pop	r29
+ 2b0:	cf 91       	pop	r28
+ 2b2:	ff 91       	pop	r31
+ 2b4:	ef 91       	pop	r30
+ 2b6:	9f 91       	pop	r25
+ 2b8:	8f 91       	pop	r24
+ 2ba:	3f 91       	pop	r19
+ 2bc:	2f 91       	pop	r18
+ 2be:	0f 90       	pop	r0
+ 2c0:	0b be       	out	0x3b, r0	; 59
+ 2c2:	0f 90       	pop	r0
+ 2c4:	0a be       	out	0x3a, r0	; 58
+ 2c6:	0f 90       	pop	r0
+ 2c8:	08 be       	out	0x38, r0	; 56
+ 2ca:	0f 90       	pop	r0
+ 2cc:	0f be       	out	0x3f, r0	; 63
+ 2ce:	0f 90       	pop	r0
+ 2d0:	1f 90       	pop	r1
+ 2d2:	18 95       	reti
+
+000002d4 <__vector_121>:
+// Ako iskljucim TXC prekid nece uposte da mi posalje podatak, objasnjenje
+ISR(USARTF0_TXC_vect) {
+ 2d4:	1f 92       	push	r1
+ 2d6:	0f 92       	push	r0
+ 2d8:	0f b6       	in	r0, 0x3f	; 63
+ 2da:	0f 92       	push	r0
+ 2dc:	11 24       	eor	r1, r1
+ 2de:	08 b6       	in	r0, 0x38	; 56
+ 2e0:	0f 92       	push	r0
+ 2e2:	18 be       	out	0x38, r1	; 56
+ 2e4:	0a b6       	in	r0, 0x3a	; 58
+ 2e6:	0f 92       	push	r0
+ 2e8:	1a be       	out	0x3a, r1	; 58
+ 2ea:	0b b6       	in	r0, 0x3b	; 59
+ 2ec:	0f 92       	push	r0
+ 2ee:	1b be       	out	0x3b, r1	; 59
+ 2f0:	2f 93       	push	r18
+ 2f2:	4f 93       	push	r20
+ 2f4:	5f 93       	push	r21
+ 2f6:	8f 93       	push	r24
+ 2f8:	9f 93       	push	r25
+ 2fa:	ef 93       	push	r30
+ 2fc:	ff 93       	push	r31
+ 2fe:	cf 93       	push	r28
+ 300:	df 93       	push	r29
+ 302:	1f 92       	push	r1
+ 304:	cd b7       	in	r28, 0x3d	; 61
+ 306:	de b7       	in	r29, 0x3e	; 62
+
+	register8_t saved_sreg = SREG;//upis statusnog registra da se zapamti prije nego sto se uradi disable prekida
+ 308:	8f b7       	in	r24, 0x3f	; 63
+ 30a:	89 83       	std	Y+1, r24	; 0x01
+	cli();//disable svih prekida
+ 30c:	f8 94       	cli
+
+	
+	if(sendData)
+ 30e:	80 91 01 20 	lds	r24, 0x2001	; 0x802001 <sendData>
+ 312:	88 23       	and	r24, r24
+ 314:	d1 f0       	breq	.+52     	; 0x34a <__vector_121+0x76>
+	{
+		if (transmit_i == (dataLength - 1))
+ 316:	20 91 00 20 	lds	r18, 0x2000	; 0x802000 <_edata>
+ 31a:	42 2f       	mov	r20, r18
+ 31c:	50 e0       	ldi	r21, 0x00	; 0
+ 31e:	80 91 04 20 	lds	r24, 0x2004	; 0x802004 <dataLength>
+ 322:	90 e0       	ldi	r25, 0x00	; 0
+ 324:	01 97       	sbiw	r24, 0x01	; 1
+ 326:	48 17       	cp	r20, r24
+ 328:	59 07       	cpc	r21, r25
+ 32a:	11 f4       	brne	.+4      	; 0x330 <__vector_121+0x5c>
+		{
+			sendData = 0;
+ 32c:	10 92 01 20 	sts	0x2001, r1	; 0x802001 <sendData>
+		}
+	
+		USARTF0.DATA = modbusDataPok[transmit_i++];
+ 330:	e0 91 02 20 	lds	r30, 0x2002	; 0x802002 <modbusDataPok>
+ 334:	f0 91 03 20 	lds	r31, 0x2003	; 0x802003 <modbusDataPok+0x1>
+ 338:	81 e0       	ldi	r24, 0x01	; 1
+ 33a:	82 0f       	add	r24, r18
+ 33c:	80 93 00 20 	sts	0x2000, r24	; 0x802000 <_edata>
+ 340:	e2 0f       	add	r30, r18
+ 342:	f1 1d       	adc	r31, r1
+ 344:	80 81       	ld	r24, Z
+ 346:	80 93 a0 0b 	sts	0x0BA0, r24	; 0x800ba0 <__TEXT_REGION_LENGTH__+0x7deba0>
+	}
+
+	SREG = saved_sreg;//vracanje statusnog registra u stanje prije obrade
+ 34a:	89 81       	ldd	r24, Y+1	; 0x01
+ 34c:	8f bf       	out	0x3f, r24	; 63
+}
+ 34e:	0f 90       	pop	r0
+ 350:	df 91       	pop	r29
+ 352:	cf 91       	pop	r28
+ 354:	ff 91       	pop	r31
+ 356:	ef 91       	pop	r30
+ 358:	9f 91       	pop	r25
+ 35a:	8f 91       	pop	r24
+ 35c:	5f 91       	pop	r21
+ 35e:	4f 91       	pop	r20
+ 360:	2f 91       	pop	r18
+ 362:	0f 90       	pop	r0
+ 364:	0b be       	out	0x3b, r0	; 59
+ 366:	0f 90       	pop	r0
+ 368:	0a be       	out	0x3a, r0	; 58
+ 36a:	0f 90       	pop	r0
+ 36c:	08 be       	out	0x38, r0	; 56
+ 36e:	0f 90       	pop	r0
+ 370:	0f be       	out	0x3f, r0	; 63
+ 372:	0f 90       	pop	r0
+ 374:	1f 90       	pop	r1
+ 376:	18 95       	reti
+
+00000378 <clock_setup>:
 void clock_setup(void)
 {
 	//32Mhz / 16 = 2Mhz clock
 
 	//Disable all clock sources
 	OSC_CTRL = 0x00;
- 250:	e0 e5       	ldi	r30, 0x50	; 80
- 252:	f0 e0       	ldi	r31, 0x00	; 0
- 254:	10 82       	st	Z, r1
+ 378:	e0 e5       	ldi	r30, 0x50	; 80
+ 37a:	f0 e0       	ldi	r31, 0x00	; 0
+ 37c:	10 82       	st	Z, r1
 	//Enable the internal 32.768 kHz RC oscillator
 	OSC_CTRL = 0x04; //Enable RC32k
- 256:	84 e0       	ldi	r24, 0x04	; 4
- 258:	80 83       	st	Z, r24
+ 37e:	84 e0       	ldi	r24, 0x04	; 4
+ 380:	80 83       	st	Z, r24
 	//Wait for the internal 32.768 kHz RC oscillator to stabilize
 	while(!(OSC_STATUS & OSC_RC32KRDY_bm));
- 25a:	80 91 51 00 	lds	r24, 0x0051	; 0x800051 <__TEXT_REGION_LENGTH__+0x7de051>
- 25e:	82 ff       	sbrs	r24, 2
- 260:	fc cf       	rjmp	.-8      	; 0x25a <clock_setup+0xa>
+ 382:	80 91 51 00 	lds	r24, 0x0051	; 0x800051 <__TEXT_REGION_LENGTH__+0x7de051>
+ 386:	82 ff       	sbrs	r24, 2
+ 388:	fc cf       	rjmp	.-8      	; 0x382 <clock_setup+0xa>
 	//Enable the internal 32 MHz RC oscillator
 	CLK_CTRL = 0x01;
- 262:	81 e0       	ldi	r24, 0x01	; 1
- 264:	80 93 40 00 	sts	0x0040, r24	; 0x800040 <__TEXT_REGION_LENGTH__+0x7de040>
+ 38a:	81 e0       	ldi	r24, 0x01	; 1
+ 38c:	80 93 40 00 	sts	0x0040, r24	; 0x800040 <__TEXT_REGION_LENGTH__+0x7de040>
 	//Disable protected IOs to update settings
 	CPU_CCP = 0xD8;
- 268:	98 ed       	ldi	r25, 0xD8	; 216
- 26a:	94 bf       	out	0x34, r25	; 52
+ 390:	98 ed       	ldi	r25, 0xD8	; 216
+ 392:	94 bf       	out	0x34, r25	; 52
 	//Configure prescalar
 	CLK_PSCTRL = 0x1C;  //32MHz devide with 16
- 26c:	9c e1       	ldi	r25, 0x1C	; 28
- 26e:	90 93 41 00 	sts	0x0041, r25	; 0x800041 <__TEXT_REGION_LENGTH__+0x7de041>
+ 394:	9c e1       	ldi	r25, 0x1C	; 28
+ 396:	90 93 41 00 	sts	0x0041, r25	; 0x800041 <__TEXT_REGION_LENGTH__+0x7de041>
 	//Configure DFLL for calibration
 	OSC_DFLLCTRL = 0x00;
- 272:	10 92 56 00 	sts	0x0056, r1	; 0x800056 <__TEXT_REGION_LENGTH__+0x7de056>
+ 39a:	10 92 56 00 	sts	0x0056, r1	; 0x800056 <__TEXT_REGION_LENGTH__+0x7de056>
 	DFLLRC32M_CTRL = 0x01;
- 276:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__TEXT_REGION_LENGTH__+0x7de060>
+ 39e:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__TEXT_REGION_LENGTH__+0x7de060>
 	//Wait for the internal 32 MHz RC oscillator to stabilize
 	while(!(OSC_STATUS & OSC_RC32MEN_bm));
- 27a:	80 91 51 00 	lds	r24, 0x0051	; 0x800051 <__TEXT_REGION_LENGTH__+0x7de051>
- 27e:	81 ff       	sbrs	r24, 1
- 280:	fc cf       	rjmp	.-8      	; 0x27a <clock_setup+0x2a>
+ 3a2:	80 91 51 00 	lds	r24, 0x0051	; 0x800051 <__TEXT_REGION_LENGTH__+0x7de051>
+ 3a6:	81 ff       	sbrs	r24, 1
+ 3a8:	fc cf       	rjmp	.-8      	; 0x3a2 <clock_setup+0x2a>
 	//Disable protected IOs to update settings
 	CPU_CCP = 0xD8;
- 282:	88 ed       	ldi	r24, 0xD8	; 216
- 284:	84 bf       	out	0x34, r24	; 52
+ 3aa:	88 ed       	ldi	r24, 0xD8	; 216
+ 3ac:	84 bf       	out	0x34, r24	; 52
 	//Select system clock source
 	CLK_CTRL = 0x01;
- 286:	81 e0       	ldi	r24, 0x01	; 1
- 288:	80 93 40 00 	sts	0x0040, r24	; 0x800040 <__TEXT_REGION_LENGTH__+0x7de040>
- 28c:	08 95       	ret
+ 3ae:	81 e0       	ldi	r24, 0x01	; 1
+ 3b0:	80 93 40 00 	sts	0x0040, r24	; 0x800040 <__TEXT_REGION_LENGTH__+0x7de040>
+ 3b4:	08 95       	ret
 
-0000028e <recive_data>:
-
+000003b6 <interrupt_setup>:
 }
 
-void recive_data(uint8_t data)
+void interrupt_setup(void)
 {
-	if(data == ':')
- 28e:	8a 33       	cpi	r24, 0x3A	; 58
- 290:	59 f4       	brne	.+22     	; 0x2a8 <recive_data+0x1a>
-	{
-		i = 0;
- 292:	10 92 00 20 	sts	0x2000, r1	; 0x802000 <__DATA_REGION_ORIGIN__>
-		dataRecived = 0;
- 296:	10 92 03 20 	sts	0x2003, r1	; 0x802003 <dataRecived>
-		modbusDataPok = modbusData;
- 29a:	24 e0       	ldi	r18, 0x04	; 4
- 29c:	30 e2       	ldi	r19, 0x20	; 32
- 29e:	20 93 01 20 	sts	0x2001, r18	; 0x802001 <modbusDataPok>
- 2a2:	30 93 02 20 	sts	0x2002, r19	; 0x802002 <modbusDataPok+0x1>
- 2a6:	0e c0       	rjmp	.+28     	; 0x2c4 <recive_data+0x36>
-	}
+	sei();	//enable global interrupts
+ 3b6:	78 94       	sei
 
-	else if(data == 10)
- 2a8:	8a 30       	cpi	r24, 0x0A	; 10
- 2aa:	61 f4       	brne	.+24     	; 0x2c4 <recive_data+0x36>
-	{
-		dataRecived = 1;
- 2ac:	91 e0       	ldi	r25, 0x01	; 1
- 2ae:	90 93 03 20 	sts	0x2003, r25	; 0x802003 <dataRecived>
-		modbusData[i] =  data;
- 2b2:	e0 91 00 20 	lds	r30, 0x2000	; 0x802000 <__DATA_REGION_ORIGIN__>
- 2b6:	f0 e0       	ldi	r31, 0x00	; 0
- 2b8:	ec 5f       	subi	r30, 0xFC	; 252
- 2ba:	ff 4d       	sbci	r31, 0xDF	; 223
- 2bc:	80 83       	st	Z, r24
-		i = 0;
- 2be:	10 92 00 20 	sts	0x2000, r1	; 0x802000 <__DATA_REGION_ORIGIN__>
-		return;
- 2c2:	08 95       	ret
-	}
+	PMIC.CTRL = 0x07;	//enable hi end interrupts
+ 3b8:	87 e0       	ldi	r24, 0x07	; 7
+ 3ba:	80 93 a2 00 	sts	0x00A2, r24	; 0x8000a2 <__TEXT_REGION_LENGTH__+0x7de0a2>
+ 3be:	08 95       	ret
 
-	modbusData[i] = data;
- 2c4:	90 91 00 20 	lds	r25, 0x2000	; 0x802000 <__DATA_REGION_ORIGIN__>
- 2c8:	e9 2f       	mov	r30, r25
- 2ca:	f0 e0       	ldi	r31, 0x00	; 0
- 2cc:	ec 5f       	subi	r30, 0xFC	; 252
- 2ce:	ff 4d       	sbci	r31, 0xDF	; 223
- 2d0:	80 83       	st	Z, r24
-	i++;
- 2d2:	9f 5f       	subi	r25, 0xFF	; 255
- 2d4:	90 93 00 20 	sts	0x2000, r25	; 0x802000 <__DATA_REGION_ORIGIN__>
- 2d8:	08 95       	ret
+000003c0 <usart_setup>:
 
-000002da <send_data>:
+void usart_setup(void)
+{
+	//1 start bit, 7 bits, odd parity, 1 stop bit, 9600 baud rate
+	
+	PORTF.OUTSET = PIN3_bm;			//Set TxF0 pin High
+ 3c0:	e0 ea       	ldi	r30, 0xA0	; 160
+ 3c2:	f6 e0       	ldi	r31, 0x06	; 6
+ 3c4:	88 e0       	ldi	r24, 0x08	; 8
+ 3c6:	85 83       	std	Z+5, r24	; 0x05
+	PORTF.DIRSET = PIN3_bm;			// PF3 (TXF0) as output.
+ 3c8:	81 83       	std	Z+1, r24	; 0x01
+	PORTF.DIRCLR = PIN2_bm;			// PF2 (RXF0) as input.
+ 3ca:	84 e0       	ldi	r24, 0x04	; 4
+ 3cc:	82 83       	std	Z+2, r24	; 0x02
+
+	USARTF0.CTRLA=0x3C;	//usart interrupts enable
+ 3ce:	e0 ea       	ldi	r30, 0xA0	; 160
+ 3d0:	fb e0       	ldi	r31, 0x0B	; 11
+ 3d2:	8c e3       	ldi	r24, 0x3C	; 60
+ 3d4:	83 83       	std	Z+3, r24	; 0x03
+	USARTF0_CTRLB = 0x18; //Transmit, Recive enable
+ 3d6:	88 e1       	ldi	r24, 0x18	; 24
+ 3d8:	80 93 a4 0b 	sts	0x0BA4, r24	; 0x800ba4 <__TEXT_REGION_LENGTH__+0x7deba4>
+			Asinhroni, odd, 1 stop, 7 bita
+			Asinhroni, even, 2 stop, 7 bita
+			Asinhroni, even, 1 stop, 8 bita
+
+	*/
+	USARTF0_CTRLC = 0x03; //Asinhroni, no parity, 8 bita, 1 stop bit
+ 3dc:	83 e0       	ldi	r24, 0x03	; 3
+ 3de:	80 93 a5 0b 	sts	0x0BA5, r24	; 0x800ba5 <__TEXT_REGION_LENGTH__+0x7deba5>
+
+	//Baud rate setup
+	USARTF0.BAUDCTRLB = 0x00; //BScale = 0
+ 3e2:	17 82       	std	Z+7, r1	; 0x07
+	USARTF0.BAUDCTRLA=13; //BSel = 13	
+ 3e4:	8d e0       	ldi	r24, 0x0D	; 13
+ 3e6:	86 83       	std	Z+6, r24	; 0x06
+ 3e8:	08 95       	ret
+
+000003ea <convert_mess_to_ascii>:
 }
 
-void send_data()
+void convert_mess_to_ascii(uint8_t* packet, uint8_t packetLen)
 {
-	if(dataRecived == 1)
- 2da:	80 91 03 20 	lds	r24, 0x2003	; 0x802003 <dataRecived>
- 2de:	81 30       	cpi	r24, 0x01	; 1
- 2e0:	b9 f4       	brne	.+46     	; 0x310 <send_data+0x36>
+ 3ea:	ac 01       	movw	r20, r24
+	uint8_t i = 0;
+
+	for(i = 0; i < packetLen; i++)
+ 3ec:	90 e0       	ldi	r25, 0x00	; 0
+ 3ee:	16 c0       	rjmp	.+44     	; 0x41c <__LOCK_REGION_LENGTH__+0x1c>
 	{
-		if(*modbusDataPok != 10)
- 2e2:	e0 91 01 20 	lds	r30, 0x2001	; 0x802001 <modbusDataPok>
- 2e6:	f0 91 02 20 	lds	r31, 0x2002	; 0x802002 <modbusDataPok+0x1>
- 2ea:	80 81       	ld	r24, Z
- 2ec:	8a 30       	cpi	r24, 0x0A	; 10
- 2ee:	61 f0       	breq	.+24     	; 0x308 <send_data+0x2e>
-		{
-			USARTF0.DATA = *modbusDataPok;
- 2f0:	80 93 a0 0b 	sts	0x0BA0, r24	; 0x800ba0 <__TEXT_REGION_LENGTH__+0x7deba0>
-			modbusDataPok++;
- 2f4:	80 91 01 20 	lds	r24, 0x2001	; 0x802001 <modbusDataPok>
- 2f8:	90 91 02 20 	lds	r25, 0x2002	; 0x802002 <modbusDataPok+0x1>
- 2fc:	01 96       	adiw	r24, 0x01	; 1
- 2fe:	80 93 01 20 	sts	0x2001, r24	; 0x802001 <modbusDataPok>
- 302:	90 93 02 20 	sts	0x2002, r25	; 0x802002 <modbusDataPok+0x1>
- 306:	08 95       	ret
-		}
+		if(packet[i] == ':' || packet[i] == 13 || packet[i] == 10)
+ 3f0:	fa 01       	movw	r30, r20
+ 3f2:	e9 0f       	add	r30, r25
+ 3f4:	f1 1d       	adc	r31, r1
+ 3f6:	20 81       	ld	r18, Z
+ 3f8:	2a 33       	cpi	r18, 0x3A	; 58
+ 3fa:	79 f0       	breq	.+30     	; 0x41a <__LOCK_REGION_LENGTH__+0x1a>
+ 3fc:	2d 30       	cpi	r18, 0x0D	; 13
+ 3fe:	69 f0       	breq	.+26     	; 0x41a <__LOCK_REGION_LENGTH__+0x1a>
+ 400:	2a 30       	cpi	r18, 0x0A	; 10
+ 402:	59 f0       	breq	.+22     	; 0x41a <__LOCK_REGION_LENGTH__+0x1a>
+			continue;
+
 		else
 		{
-			USARTF0.DATA = *modbusDataPok;
- 308:	80 93 a0 0b 	sts	0x0BA0, r24	; 0x800ba0 <__TEXT_REGION_LENGTH__+0x7deba0>
-			dataRecived = 0;
- 30c:	10 92 03 20 	sts	0x2003, r1	; 0x802003 <dataRecived>
- 310:	08 95       	ret
+			if (packet[i] >= 0 && packet[i] <= 9)
+ 404:	2a 30       	cpi	r18, 0x0A	; 10
+ 406:	10 f4       	brcc	.+4      	; 0x40c <__LOCK_REGION_LENGTH__+0xc>
+			{
+				packet[i] += 48;
+ 408:	20 5d       	subi	r18, 0xD0	; 208
+ 40a:	20 83       	st	Z, r18
+			}
 
-00000312 <usart_rx_tx>:
+			if (packet[i] >= 10 && packet[i] <= 15)
+ 40c:	20 81       	ld	r18, Z
+ 40e:	86 ef       	ldi	r24, 0xF6	; 246
+ 410:	82 0f       	add	r24, r18
+ 412:	86 30       	cpi	r24, 0x06	; 6
+ 414:	10 f4       	brcc	.+4      	; 0x41a <__LOCK_REGION_LENGTH__+0x1a>
+			{
+				packet[i] += 55;	
+ 416:	29 5c       	subi	r18, 0xC9	; 201
+ 418:	20 83       	st	Z, r18
 
-void usart_rx_tx(void)
+void convert_mess_to_ascii(uint8_t* packet, uint8_t packetLen)
 {
-	uint8_t recived = 0;
+	uint8_t i = 0;
 
-	while(!(USARTF0.STATUS & USART_RXCIF_bm));
- 312:	80 91 a1 0b 	lds	r24, 0x0BA1	; 0x800ba1 <__TEXT_REGION_LENGTH__+0x7deba1>
- 316:	88 23       	and	r24, r24
- 318:	e4 f7       	brge	.-8      	; 0x312 <usart_rx_tx>
-	
-	recived = USARTF0.DATA;
- 31a:	80 91 a0 0b 	lds	r24, 0x0BA0	; 0x800ba0 <__TEXT_REGION_LENGTH__+0x7deba0>
-	recive_data(recived);
- 31e:	90 e0       	ldi	r25, 0x00	; 0
- 320:	0e 94 47 01 	call	0x28e	; 0x28e <recive_data>
-
-	while(!(USARTF0.STATUS & USART_DREIF_bm));
- 324:	80 91 a1 0b 	lds	r24, 0x0BA1	; 0x800ba1 <__TEXT_REGION_LENGTH__+0x7deba1>
- 328:	85 ff       	sbrs	r24, 5
- 32a:	fc cf       	rjmp	.-8      	; 0x324 <usart_rx_tx+0x12>
-
-	send_data();
- 32c:	0e 94 6d 01 	call	0x2da	; 0x2da <send_data>
- 330:	08 95       	ret
-
-00000332 <main>:
+	for(i = 0; i < packetLen; i++)
+ 41a:	9f 5f       	subi	r25, 0xFF	; 255
+ 41c:	96 17       	cp	r25, r22
+ 41e:	40 f3       	brcs	.-48     	; 0x3f0 <convert_mess_to_ascii+0x6>
+			{
+				packet[i] += 55;	
+			}
+		}
 	}
 }
+ 420:	08 95       	ret
+
+00000422 <convert_8bit>:
+	uint8_t ret_data = 0;
+
+	//Konvertovanje iz ASCII u interni oblik broja
+
+	//HI
+	if(hi_data >= 'A' && hi_data <= 'F')
+ 422:	9f eb       	ldi	r25, 0xBF	; 191
+ 424:	98 0f       	add	r25, r24
+ 426:	96 30       	cpi	r25, 0x06	; 6
+ 428:	18 f4       	brcc	.+6      	; 0x430 <convert_8bit+0xe>
+	{
+		hi_data -= 55;
+ 42a:	99 ec       	ldi	r25, 0xC9	; 201
+ 42c:	98 0f       	add	r25, r24
+ 42e:	0c c0       	rjmp	.+24     	; 0x448 <convert_8bit+0x26>
+	}
+
+	else if(hi_data >= 'a' && hi_data <='f')
+ 430:	9f e9       	ldi	r25, 0x9F	; 159
+ 432:	98 0f       	add	r25, r24
+ 434:	96 30       	cpi	r25, 0x06	; 6
+ 436:	18 f4       	brcc	.+6      	; 0x43e <convert_8bit+0x1c>
+	{
+		hi_data -= 87;
+ 438:	99 ea       	ldi	r25, 0xA9	; 169
+ 43a:	98 0f       	add	r25, r24
+ 43c:	05 c0       	rjmp	.+10     	; 0x448 <convert_8bit+0x26>
+	}
+
+	else if(hi_data >= '0' && hi_data <= '9')
+ 43e:	90 ed       	ldi	r25, 0xD0	; 208
+ 440:	98 0f       	add	r25, r24
+ 442:	9a 30       	cpi	r25, 0x0A	; 10
+ 444:	08 f0       	brcs	.+2      	; 0x448 <convert_8bit+0x26>
+ 446:	98 2f       	mov	r25, r24
+	{
+		hi_data -= 48;
+	}
+
+	//LO
+	if(lo_data >= 'A' && lo_data <= 'F')
+ 448:	8f eb       	ldi	r24, 0xBF	; 191
+ 44a:	86 0f       	add	r24, r22
+ 44c:	86 30       	cpi	r24, 0x06	; 6
+ 44e:	18 f4       	brcc	.+6      	; 0x456 <convert_8bit+0x34>
+	{
+		lo_data -= 55;
+ 450:	29 ec       	ldi	r18, 0xC9	; 201
+ 452:	26 0f       	add	r18, r22
+ 454:	0c c0       	rjmp	.+24     	; 0x46e <convert_8bit+0x4c>
+	}
+
+	else if(lo_data >= 'a' && lo_data <='f')
+ 456:	8f e9       	ldi	r24, 0x9F	; 159
+ 458:	86 0f       	add	r24, r22
+ 45a:	86 30       	cpi	r24, 0x06	; 6
+ 45c:	18 f4       	brcc	.+6      	; 0x464 <convert_8bit+0x42>
+	{
+		lo_data -= 87;
+ 45e:	29 ea       	ldi	r18, 0xA9	; 169
+ 460:	26 0f       	add	r18, r22
+ 462:	05 c0       	rjmp	.+10     	; 0x46e <convert_8bit+0x4c>
+	}
+
+	else if(lo_data >= '0' && lo_data <= '9')
+ 464:	20 ed       	ldi	r18, 0xD0	; 208
+ 466:	26 0f       	add	r18, r22
+ 468:	2a 30       	cpi	r18, 0x0A	; 10
+ 46a:	08 f0       	brcs	.+2      	; 0x46e <convert_8bit+0x4c>
+ 46c:	26 2f       	mov	r18, r22
+	{
+		lo_data -= 48;
+	}
+
+	ret_data = (hi_data << 4) | (lo_data);
+ 46e:	30 e1       	ldi	r19, 0x10	; 16
+ 470:	93 9f       	mul	r25, r19
+ 472:	c0 01       	movw	r24, r0
+ 474:	11 24       	eor	r1, r1
+
+	return ret_data;
+}
+ 476:	82 2b       	or	r24, r18
+ 478:	08 95       	ret
+
+0000047a <convert_16bit>:
+//ako radi dobro 8bit konverzija cenim da i ova konverzija radi dobro
+uint16_t convert_16bit(uint8_t hi_dataHi, uint8_t hi_dataLo, uint8_t lo_dataHi, uint8_t lo_dataLo)
+{
+ 47a:	1f 93       	push	r17
+ 47c:	cf 93       	push	r28
+ 47e:	df 93       	push	r29
+ 480:	d4 2f       	mov	r29, r20
+ 482:	12 2f       	mov	r17, r18
+	uint16_t ret_data = 0;
+	uint8_t data16_hi = 0;
+	uint8_t data16_lo = 0;
+
+	data16_hi = convert_8bit(hi_dataHi, hi_dataLo);
+ 484:	0e 94 11 02 	call	0x422	; 0x422 <convert_8bit>
+ 488:	c8 2f       	mov	r28, r24
+	data16_lo = convert_8bit(lo_dataHi, lo_dataLo);
+ 48a:	61 2f       	mov	r22, r17
+ 48c:	8d 2f       	mov	r24, r29
+ 48e:	0e 94 11 02 	call	0x422	; 0x422 <convert_8bit>
+
+	ret_data = (data16_hi << 8) | (data16_lo); 
+ 492:	2c 2f       	mov	r18, r28
+ 494:	30 e0       	ldi	r19, 0x00	; 0
+ 496:	32 2f       	mov	r19, r18
+ 498:	22 27       	eor	r18, r18
+
+	return ret_data;
+}
+ 49a:	a9 01       	movw	r20, r18
+ 49c:	48 2b       	or	r20, r24
+ 49e:	ca 01       	movw	r24, r20
+ 4a0:	df 91       	pop	r29
+ 4a2:	cf 91       	pop	r28
+ 4a4:	1f 91       	pop	r17
+ 4a6:	08 95       	ret
+
+000004a8 <parse_modbus_data>:
+//radi dobro
+void parse_modbus_data(const uint8_t* modbus_data, ModbusDataStruct* dataStruct)
+{
+ 4a8:	0f 93       	push	r16
+ 4aa:	1f 93       	push	r17
+ 4ac:	cf 93       	push	r28
+ 4ae:	df 93       	push	r29
+ 4b0:	ec 01       	movw	r28, r24
+ 4b2:	8b 01       	movw	r16, r22
+	dataStruct->slaveAddr = convert_8bit(modbus_data[1], modbus_data[2]);
+ 4b4:	6a 81       	ldd	r22, Y+2	; 0x02
+ 4b6:	89 81       	ldd	r24, Y+1	; 0x01
+ 4b8:	0e 94 11 02 	call	0x422	; 0x422 <convert_8bit>
+ 4bc:	f8 01       	movw	r30, r16
+ 4be:	80 83       	st	Z, r24
+	dataStruct->func = convert_8bit(modbus_data[3], modbus_data[4]);
+ 4c0:	6c 81       	ldd	r22, Y+4	; 0x04
+ 4c2:	8b 81       	ldd	r24, Y+3	; 0x03
+ 4c4:	0e 94 11 02 	call	0x422	; 0x422 <convert_8bit>
+ 4c8:	f8 01       	movw	r30, r16
+ 4ca:	81 83       	std	Z+1, r24	; 0x01
+	dataStruct->regStartAddr = convert_16bit(modbus_data[5], modbus_data[6], modbus_data[7], modbus_data[8]);
+ 4cc:	28 85       	ldd	r18, Y+8	; 0x08
+ 4ce:	4f 81       	ldd	r20, Y+7	; 0x07
+ 4d0:	6e 81       	ldd	r22, Y+6	; 0x06
+ 4d2:	8d 81       	ldd	r24, Y+5	; 0x05
+ 4d4:	0e 94 3d 02 	call	0x47a	; 0x47a <convert_16bit>
+ 4d8:	f8 01       	movw	r30, r16
+ 4da:	82 83       	std	Z+2, r24	; 0x02
+ 4dc:	93 83       	std	Z+3, r25	; 0x03
+	dataStruct->regQuantity = convert_16bit(modbus_data[9], modbus_data[10], modbus_data[11], modbus_data[12]);
+ 4de:	2c 85       	ldd	r18, Y+12	; 0x0c
+ 4e0:	4b 85       	ldd	r20, Y+11	; 0x0b
+ 4e2:	6a 85       	ldd	r22, Y+10	; 0x0a
+ 4e4:	89 85       	ldd	r24, Y+9	; 0x09
+ 4e6:	0e 94 3d 02 	call	0x47a	; 0x47a <convert_16bit>
+ 4ea:	f8 01       	movw	r30, r16
+ 4ec:	84 83       	std	Z+4, r24	; 0x04
+ 4ee:	95 83       	std	Z+5, r25	; 0x05
+	dataStruct->lrc = convert_8bit(modbus_data[13], modbus_data[14]);
+ 4f0:	6e 85       	ldd	r22, Y+14	; 0x0e
+ 4f2:	8d 85       	ldd	r24, Y+13	; 0x0d
+ 4f4:	0e 94 11 02 	call	0x422	; 0x422 <convert_8bit>
+ 4f8:	f8 01       	movw	r30, r16
+ 4fa:	86 83       	std	Z+6, r24	; 0x06
+}
+ 4fc:	df 91       	pop	r29
+ 4fe:	cf 91       	pop	r28
+ 500:	1f 91       	pop	r17
+ 502:	0f 91       	pop	r16
+ 504:	08 95       	ret
+
+00000506 <mess_len>:
+
+//radi dobro
+uint8_t mess_len(const uint8_t* mess)
+{
+ 506:	ac 01       	movw	r20, r24
+	uint8_t i = 0;
+ 508:	80 e0       	ldi	r24, 0x00	; 0
+	while(*(mess + i) != 10)
+ 50a:	01 c0       	rjmp	.+2      	; 0x50e <mess_len+0x8>
+	{
+		i++;
+ 50c:	8f 5f       	subi	r24, 0xFF	; 255
+
+//radi dobro
+uint8_t mess_len(const uint8_t* mess)
+{
+	uint8_t i = 0;
+	while(*(mess + i) != 10)
+ 50e:	fa 01       	movw	r30, r20
+ 510:	e8 0f       	add	r30, r24
+ 512:	f1 1d       	adc	r31, r1
+ 514:	20 81       	ld	r18, Z
+ 516:	2a 30       	cpi	r18, 0x0A	; 10
+ 518:	c9 f7       	brne	.-14     	; 0x50c <mess_len+0x6>
+	{
+		i++;
+	}
+	//Kad dodje do LF zavrsice petlju, ali i LF je deo poruke
+	return i + 1;
+}
+ 51a:	8f 5f       	subi	r24, 0xFF	; 255
+ 51c:	08 95       	ret
+
+0000051e <lrc_calc2>:
+//radi dobro
+uint8_t lrc_calc2(const uint8_t* message, uint8_t mess_len)
+{
+ 51e:	9c 01       	movw	r18, r24
+	uint8_t lrc = 0 ; /* LRC char initialized */
+ 520:	90 e0       	ldi	r25, 0x00	; 0
+	while (mess_len) /* pass through message buffer */
+ 522:	0a c0       	rjmp	.+20     	; 0x538 <lrc_calc2+0x1a>
+	{
+		if(message[mess_len - 1] == ':')
+ 524:	f9 01       	movw	r30, r18
+ 526:	e6 0f       	add	r30, r22
+ 528:	f1 1d       	adc	r31, r1
+ 52a:	31 97       	sbiw	r30, 0x01	; 1
+ 52c:	80 81       	ld	r24, Z
+ 52e:	8a 33       	cpi	r24, 0x3A	; 58
+ 530:	29 f0       	breq	.+10     	; 0x53c <lrc_calc2+0x1e>
+			break;
+
+		lrc += (message[mess_len - 1] - 48); /* add buffer byte without carry */
+ 532:	98 0f       	add	r25, r24
+ 534:	90 53       	subi	r25, 0x30	; 48
+
+		mess_len--;
+ 536:	61 50       	subi	r22, 0x01	; 1
+}
+//radi dobro
+uint8_t lrc_calc2(const uint8_t* message, uint8_t mess_len)
+{
+	uint8_t lrc = 0 ; /* LRC char initialized */
+	while (mess_len) /* pass through message buffer */
+ 538:	61 11       	cpse	r22, r1
+ 53a:	f4 cf       	rjmp	.-24     	; 0x524 <lrc_calc2+0x6>
+		lrc += (message[mess_len - 1] - 48); /* add buffer byte without carry */
+
+		mess_len--;
+	}
+	return ((uint8_t)(-((int8_t)lrc))); /* return twos complement */
+}
+ 53c:	89 2f       	mov	r24, r25
+ 53e:	81 95       	neg	r24
+ 540:	08 95       	ret
+
+00000542 <lrc_check>:
+
+// Vraca 1 kada je LRC Check dobar
+// Vraca 0 kada je LRC Check los
+// radi dobro
+uint8_t lrc_check(ModbusDataStruct* modbusStruct, const uint8_t* modbusData)
+{
+ 542:	0f 93       	push	r16
+ 544:	1f 93       	push	r17
+ 546:	cf 93       	push	r28
+ 548:	df 93       	push	r29
+ 54a:	8c 01       	movw	r16, r24
+ 54c:	eb 01       	movw	r28, r22
+	uint8_t lrc = 0U;
+	uint8_t messlen = 0U;
+	uint8_t retcode = 1U;
+
+	//mess_len(modbusData) - 4 predstavlja poruku, ali bez poslednja 4 podatka koji predstavljaju LRC (2 chara) i CR, LF
+	messlen = mess_len(modbusData);
+ 54e:	cb 01       	movw	r24, r22
+ 550:	0e 94 83 02 	call	0x506	; 0x506 <mess_len>
+	lrc = lrc_calc2(modbusData, messlen - 4);
+ 554:	6c ef       	ldi	r22, 0xFC	; 252
+ 556:	68 0f       	add	r22, r24
+ 558:	ce 01       	movw	r24, r28
+ 55a:	0e 94 8f 02 	call	0x51e	; 0x51e <lrc_calc2>
+
+	if(lrc != modbusStruct->lrc)
+ 55e:	f8 01       	movw	r30, r16
+ 560:	96 81       	ldd	r25, Z+6	; 0x06
+ 562:	89 13       	cpse	r24, r25
+ 564:	02 c0       	rjmp	.+4      	; 0x56a <lrc_check+0x28>
+// radi dobro
+uint8_t lrc_check(ModbusDataStruct* modbusStruct, const uint8_t* modbusData)
+{
+	uint8_t lrc = 0U;
+	uint8_t messlen = 0U;
+	uint8_t retcode = 1U;
+ 566:	81 e0       	ldi	r24, 0x01	; 1
+ 568:	01 c0       	rjmp	.+2      	; 0x56c <lrc_check+0x2a>
+	messlen = mess_len(modbusData);
+	lrc = lrc_calc2(modbusData, messlen - 4);
+
+	if(lrc != modbusStruct->lrc)
+	{
+		retcode = 0U;
+ 56a:	80 e0       	ldi	r24, 0x00	; 0
+	}
+
+	return retcode;
+}
+ 56c:	df 91       	pop	r29
+ 56e:	cf 91       	pop	r28
+ 570:	1f 91       	pop	r17
+ 572:	0f 91       	pop	r16
+ 574:	08 95       	ret
+
+00000576 <modbus_function3>:
+// response_data[1] i response_data[2] = slave_addr
+// response_data[3] i response_data[4] = func_code
+// response_data[5] - response_data[reg_number - 1] = podaci koje "citam" iz registara
+// i duzinu odgovora - 4
+uint8_t modbus_function3(ModbusDataStruct* modbusStruct, uint8_t* responseData, uint8_t slaveAddr, uint8_t* messageLength)
+{
+ 576:	db 01       	movw	r26, r22
+	uint16_t start_address = 0;
+	uint16_t reg_number = 0;
+	uint8_t i = 0;
+
+	start_address = modbusStruct->regStartAddr;
+	reg_number = modbusStruct->regQuantity;
+ 578:	fc 01       	movw	r30, r24
+ 57a:	64 81       	ldd	r22, Z+4	; 0x04
+ 57c:	75 81       	ldd	r23, Z+5	; 0x05
+
+	if((reg_number >= 0) || (reg_number <= MAX_WORD_TO_READ))
+	{
+		//citaj neke vrednosti bezveze za sad
+		for(i = 0; i < reg_number; i++)
+ 57e:	80 e0       	ldi	r24, 0x00	; 0
+ 580:	08 c0       	rjmp	.+16     	; 0x592 <modbus_function3+0x1c>
+		{
+			uint8_t value = 0xFFU; //podaci koji se citaju su obicno 16bitni, pa ih razlazemo u dva bajta, ali mozda i mogu da koristim 8bitni podatak
+			
+			responseData[5 + i] = value; //samo cu popuniti povratnu poruku nekim glupim vrednostima, ovde tipa 0xFF 
+ 582:	e8 2f       	mov	r30, r24
+ 584:	f0 e0       	ldi	r31, 0x00	; 0
+ 586:	35 96       	adiw	r30, 0x05	; 5
+ 588:	ea 0f       	add	r30, r26
+ 58a:	fb 1f       	adc	r31, r27
+ 58c:	9f ef       	ldi	r25, 0xFF	; 255
+ 58e:	90 83       	st	Z, r25
+	reg_number = modbusStruct->regQuantity;
+
+	if((reg_number >= 0) || (reg_number <= MAX_WORD_TO_READ))
+	{
+		//citaj neke vrednosti bezveze za sad
+		for(i = 0; i < reg_number; i++)
+ 590:	8f 5f       	subi	r24, 0xFF	; 255
+ 592:	e8 2f       	mov	r30, r24
+ 594:	f0 e0       	ldi	r31, 0x00	; 0
+ 596:	e6 17       	cp	r30, r22
+ 598:	f7 07       	cpc	r31, r23
+ 59a:	98 f3       	brcs	.-26     	; 0x582 <modbus_function3+0xc>
+		//da li cu uraditi 0xF + 48 pa to upisati u responseData[0]
+		//ili cu upisati samo 0xF u responseData[0]
+
+		//ali mislim da to moram uraditi posle racunanja lrc-a 
+
+		responseData[0] = 0;//stavio sam 0 zbog racunanja lrc
+ 59c:	1c 92       	st	X, r1
+		responseData[1] = (slaveAddr >> 4U);
+ 59e:	84 2f       	mov	r24, r20
+ 5a0:	82 95       	swap	r24
+ 5a2:	8f 70       	andi	r24, 0x0F	; 15
+ 5a4:	11 96       	adiw	r26, 0x01	; 1
+ 5a6:	8c 93       	st	X, r24
+ 5a8:	11 97       	sbiw	r26, 0x01	; 1
+		responseData[2] = (slaveAddr & 0x0FU);
+ 5aa:	4f 70       	andi	r20, 0x0F	; 15
+ 5ac:	12 96       	adiw	r26, 0x02	; 2
+ 5ae:	4c 93       	st	X, r20
+ 5b0:	12 97       	sbiw	r26, 0x02	; 2
+		responseData[3] = (func >> 4U);
+ 5b2:	13 96       	adiw	r26, 0x03	; 3
+ 5b4:	1c 92       	st	X, r1
+ 5b6:	13 97       	sbiw	r26, 0x03	; 3
+		responseData[4] = (func & 0x0FU);
+ 5b8:	83 e0       	ldi	r24, 0x03	; 3
+ 5ba:	14 96       	adiw	r26, 0x04	; 4
+ 5bc:	8c 93       	st	X, r24
+
+		*messageLength = reg_number + 5; //+5 zbog prvih pet podataka poruke
+ 5be:	6b 5f       	subi	r22, 0xFB	; 251
+ 5c0:	f9 01       	movw	r30, r18
+ 5c2:	60 83       	st	Z, r22
+	{
+		retcode = MODBUS_ILLEGAL_DATA_VALUE;
+	}
+
+	return retcode;	//vraca dobar retcode
+}
+ 5c4:	80 e0       	ldi	r24, 0x00	; 0
+ 5c6:	08 95       	ret
+
+000005c8 <modbus_get_result>:
+
+uint8_t modbus_get_result(ModbusDataStruct* modbusStruct, uint8_t* responseData, uint8_t* messageLen, uint8_t slaveAddr)
+{
+	uint8_t retcode = 0U;
+
+	switch(modbusStruct->func)
+ 5c8:	fc 01       	movw	r30, r24
+ 5ca:	31 81       	ldd	r19, Z+1	; 0x01
+ 5cc:	33 30       	cpi	r19, 0x03	; 3
+ 5ce:	31 f4       	brne	.+12     	; 0x5dc <modbus_get_result+0x14>
+ 5d0:	e2 2f       	mov	r30, r18
+ 5d2:	9a 01       	movw	r18, r20
+	{
+		case 3:
+			retcode = modbus_function3(modbusStruct, responseData, slaveAddr, messageLen);
+ 5d4:	4e 2f       	mov	r20, r30
+ 5d6:	0e 94 bb 02 	call	0x576	; 0x576 <modbus_function3>
+			break;
+ 5da:	08 95       	ret
+		
+		default:
+			retcode = MODBUS_ILLEGAL_FUNCTION;
+ 5dc:	81 e0       	ldi	r24, 0x01	; 1
+			break;
+	}
+
+	return retcode;	
+}
+ 5de:	08 95       	ret
+
+000005e0 <modbus_process>:
+
+//main func for modbus
+int32_t modbus_process(ModbusDataStruct* modbusStruct, uint8_t* packetToSend, uint8_t* responeMessLen)
+{
+ 5e0:	cf 92       	push	r12
+ 5e2:	df 92       	push	r13
+ 5e4:	ef 92       	push	r14
+ 5e6:	ff 92       	push	r15
+ 5e8:	0f 93       	push	r16
+ 5ea:	1f 93       	push	r17
+ 5ec:	cf 93       	push	r28
+ 5ee:	df 93       	push	r29
+ 5f0:	7c 01       	movw	r14, r24
+ 5f2:	eb 01       	movw	r28, r22
+ 5f4:	8a 01       	movw	r16, r20
+	uint8_t func = 3;
+	uint8_t processResult = 0;
+
+	//da li treba proveriti duzinu poruke, ako treba TODO: dodati jos jedan if iznad i proslediti odgovarajuci error
+	//LRC Check
+	if (lrc_check(modbusStruct, modbusData))
+ 5f6:	66 e0       	ldi	r22, 0x06	; 6
+ 5f8:	70 e2       	ldi	r23, 0x20	; 32
+ 5fa:	0e 94 a1 02 	call	0x542	; 0x542 <lrc_check>
+ 5fe:	88 23       	and	r24, r24
+ 600:	09 f4       	brne	.+2      	; 0x604 <modbus_process+0x24>
+ 602:	6f c0       	rjmp	.+222    	; 0x6e2 <modbus_process+0x102>
+	{
+		if ((modbusStruct->slaveAddr == SLAVE_ID) || (modbusStruct->slaveAddr == 0U))
+ 604:	d7 01       	movw	r26, r14
+ 606:	8c 91       	ld	r24, X
+ 608:	82 30       	cpi	r24, 0x02	; 2
+ 60a:	08 f0       	brcs	.+2      	; 0x60e <modbus_process+0x2e>
+ 60c:	73 c0       	rjmp	.+230    	; 0x6f4 <modbus_process+0x114>
+		{
+			//Ako je prosao provere dobre duzine poruke(ako treba), ako je dobar LRC i ako je dobra adresa slavea, tj. ako se obraca ovoj masini nastavi obradu poruke
+
+			processResult = modbus_get_result(modbusStruct, packetToSend, &dataLength, slaveAddr);
+ 60e:	21 e0       	ldi	r18, 0x01	; 1
+ 610:	44 e0       	ldi	r20, 0x04	; 4
+ 612:	50 e2       	ldi	r21, 0x20	; 32
+ 614:	be 01       	movw	r22, r28
+ 616:	c7 01       	movw	r24, r14
+ 618:	0e 94 e4 02 	call	0x5c8	; 0x5c8 <modbus_get_result>
+			
+			//popravi ovo ovde je sve skoro lose koliko sad vidim
+			//niasm uradio greske, kako to da vratim?
+			if(processResult != MODBUS_NO_ERROR)
+ 61c:	88 23       	and	r24, r24
+ 61e:	49 f1       	breq	.+82     	; 0x672 <modbus_process+0x92>
+			{
+				USARTF0.DATA = 'd';
+ 620:	94 e6       	ldi	r25, 0x64	; 100
+ 622:	90 93 a0 0b 	sts	0x0BA0, r25	; 0x800ba0 <__TEXT_REGION_LENGTH__+0x7deba0>
+				packetToSend[0] = 0;
+ 626:	18 82       	st	Y, r1
+				packetToSend[1] = slaveAddr >> 8U;
+ 628:	19 82       	std	Y+1, r1	; 0x01
+				packetToSend[2] = slaveAddr && 0xFFU;
+ 62a:	91 e0       	ldi	r25, 0x01	; 1
+ 62c:	9a 83       	std	Y+2, r25	; 0x02
+				packetToSend[3] = func >> 8U;
+ 62e:	1b 82       	std	Y+3, r1	; 0x03
+				packetToSend[4] = func && 0xFFU;
+ 630:	9c 83       	std	Y+4, r25	; 0x04
+				packetToSend[5] = processResult >> 8U;
+ 632:	1d 82       	std	Y+5, r1	; 0x05
+				packetToSend[6] = processResult && 0xFFU;
+ 634:	81 11       	cpse	r24, r1
+ 636:	01 c0       	rjmp	.+2      	; 0x63a <modbus_process+0x5a>
+ 638:	90 e0       	ldi	r25, 0x00	; 0
+ 63a:	9e 83       	std	Y+6, r25	; 0x06
+
+				//checksum
+				uint8_t error_lrc = 0;
+				error_lrc = lrc_calc2(packetToSend,7U);
+ 63c:	67 e0       	ldi	r22, 0x07	; 7
+ 63e:	ce 01       	movw	r24, r28
+ 640:	0e 94 8f 02 	call	0x51e	; 0x51e <lrc_calc2>
+
+				packetToSend[7] = error_lrc >> 8U;
+ 644:	1f 82       	std	Y+7, r1	; 0x07
+				packetToSend[8] = error_lrc && 0xFFU;
+ 646:	91 e0       	ldi	r25, 0x01	; 1
+ 648:	81 11       	cpse	r24, r1
+ 64a:	01 c0       	rjmp	.+2      	; 0x64e <modbus_process+0x6e>
+ 64c:	90 e0       	ldi	r25, 0x00	; 0
+ 64e:	98 87       	std	Y+8, r25	; 0x08
+				packetToSend[9] = 13;
+ 650:	8d e0       	ldi	r24, 0x0D	; 13
+ 652:	89 87       	std	Y+9, r24	; 0x09
+				packetToSend[10] = 10;
+ 654:	8a e0       	ldi	r24, 0x0A	; 10
+ 656:	8a 87       	std	Y+10, r24	; 0x0a
+				packetToSend[0] = ':';
+ 658:	8a e3       	ldi	r24, 0x3A	; 58
+ 65a:	88 83       	st	Y, r24
+
+				retcode = -1;
+				dataLength = 11;
+ 65c:	8b e0       	ldi	r24, 0x0B	; 11
+ 65e:	80 93 04 20 	sts	0x2004, r24	; 0x802004 <dataLength>
+
+				//poruka spremna za slanje
+				//posalji parvi karakter iniciraj slanje podataka
+				USARTF0.DATA = packetToSend[0];
+ 662:	88 81       	ld	r24, Y
+ 664:	80 93 a0 0b 	sts	0x0BA0, r24	; 0x800ba0 <__TEXT_REGION_LENGTH__+0x7deba0>
+				packetToSend[8] = error_lrc && 0xFFU;
+				packetToSend[9] = 13;
+				packetToSend[10] = 10;
+				packetToSend[0] = ':';
+
+				retcode = -1;
+ 668:	cc 24       	eor	r12, r12
+ 66a:	ca 94       	dec	r12
+ 66c:	dc 2c       	mov	r13, r12
+ 66e:	76 01       	movw	r14, r12
+ 670:	49 c0       	rjmp	.+146    	; 0x704 <modbus_process+0x124>
+			}
+
+			else
+			{
+				//moram sve osim :, CR i LF-a prebaciti u ascii pre slanja poruke i posle racunanja lrc-a
+				uint8_t lrc = lrc_calc2(packetToSend, *responeMessLen);
+ 672:	f8 01       	movw	r30, r16
+ 674:	60 81       	ld	r22, Z
+ 676:	ce 01       	movw	r24, r28
+ 678:	0e 94 8f 02 	call	0x51e	; 0x51e <lrc_calc2>
+				packetToSend[0] = ':';	//bila je 0 dok sam racunao lrc, sada mogu da postavim ovaj karakter koji oznacava pocetak komunikacije
+ 67c:	9a e3       	ldi	r25, 0x3A	; 58
+ 67e:	98 83       	st	Y, r25
+				//nadovezi lrc na poruku
+				packetToSend[*responeMessLen] = (lrc >> 4U);
+ 680:	d8 01       	movw	r26, r16
+ 682:	9c 91       	ld	r25, X
+ 684:	fe 01       	movw	r30, r28
+ 686:	e9 0f       	add	r30, r25
+ 688:	f1 1d       	adc	r31, r1
+ 68a:	98 2f       	mov	r25, r24
+ 68c:	92 95       	swap	r25
+ 68e:	9f 70       	andi	r25, 0x0F	; 15
+ 690:	90 83       	st	Z, r25
+				packetToSend[*responeMessLen + 1] = (lrc & 0x0FU);
+ 692:	ec 91       	ld	r30, X
+ 694:	f0 e0       	ldi	r31, 0x00	; 0
+ 696:	31 96       	adiw	r30, 0x01	; 1
+ 698:	ec 0f       	add	r30, r28
+ 69a:	fd 1f       	adc	r31, r29
+ 69c:	8f 70       	andi	r24, 0x0F	; 15
+ 69e:	80 83       	st	Z, r24
+				//nadovezi cr(13) i lf(10) na poruku
+				packetToSend[*responeMessLen + 2] = 13;
+ 6a0:	ec 91       	ld	r30, X
+ 6a2:	f0 e0       	ldi	r31, 0x00	; 0
+ 6a4:	32 96       	adiw	r30, 0x02	; 2
+ 6a6:	ec 0f       	add	r30, r28
+ 6a8:	fd 1f       	adc	r31, r29
+ 6aa:	8d e0       	ldi	r24, 0x0D	; 13
+ 6ac:	80 83       	st	Z, r24
+				packetToSend[*responeMessLen + 3] = 10;
+ 6ae:	ec 91       	ld	r30, X
+ 6b0:	f0 e0       	ldi	r31, 0x00	; 0
+ 6b2:	33 96       	adiw	r30, 0x03	; 3
+ 6b4:	ec 0f       	add	r30, r28
+ 6b6:	fd 1f       	adc	r31, r29
+ 6b8:	8a e0       	ldi	r24, 0x0A	; 10
+ 6ba:	80 83       	st	Z, r24
+
+				*responeMessLen += 4U; //produzi zbog lrc, i cr lf
+ 6bc:	6c 91       	ld	r22, X
+ 6be:	6c 5f       	subi	r22, 0xFC	; 252
+ 6c0:	6c 93       	st	X, r22
+				retcode = *responeMessLen; //ako je sve dobro vrati samo duzinu poruke
+ 6c2:	c6 2e       	mov	r12, r22
+ 6c4:	d1 2c       	mov	r13, r1
+ 6c6:	e1 2c       	mov	r14, r1
+ 6c8:	f1 2c       	mov	r15, r1
+
+
+				convert_mess_to_ascii(packetToSend, *responeMessLen);
+ 6ca:	ce 01       	movw	r24, r28
+ 6cc:	0e 94 f5 01 	call	0x3ea	; 0x3ea <convert_mess_to_ascii>
+
+				//poruka spremna za slanje
+				//Posalji prvi karkater iniciraj slanje podataka
+				sendData = 1;
+ 6d0:	81 e0       	ldi	r24, 0x01	; 1
+ 6d2:	80 93 01 20 	sts	0x2001, r24	; 0x802001 <sendData>
+				transmit_i = 1;	//ovo mi oznacava od kog podatka krecem komunikaciju
+ 6d6:	80 93 00 20 	sts	0x2000, r24	; 0x802000 <_edata>
+								//posto cu posalati : da zapocenem komunikaciju (sto mi je prvi podatak) mogu da nastavim slanje podataka preko prekida od prvog sledeceg
+				
+				USARTF0.DATA = packetToSend[0];
+ 6da:	88 81       	ld	r24, Y
+ 6dc:	80 93 a0 0b 	sts	0x0BA0, r24	; 0x800ba0 <__TEXT_REGION_LENGTH__+0x7deba0>
+ 6e0:	11 c0       	rjmp	.+34     	; 0x704 <modbus_process+0x124>
+		}
+	}
+
+	else
+	{
+		retcode = MB_PACKET_ERROR_CRC;
+ 6e2:	0f 2e       	mov	r0, r31
+ 6e4:	fe ef       	ldi	r31, 0xFE	; 254
+ 6e6:	cf 2e       	mov	r12, r31
+ 6e8:	dd 24       	eor	r13, r13
+ 6ea:	da 94       	dec	r13
+ 6ec:	ed 2c       	mov	r14, r13
+ 6ee:	fd 2c       	mov	r15, r13
+ 6f0:	f0 2d       	mov	r31, r0
+ 6f2:	08 c0       	rjmp	.+16     	; 0x704 <modbus_process+0x124>
+			
+		}
+
+		else
+		{
+			retcode = MB_PACKET_ERROR_ADDR;
+ 6f4:	0f 2e       	mov	r0, r31
+ 6f6:	fd ef       	ldi	r31, 0xFD	; 253
+ 6f8:	cf 2e       	mov	r12, r31
+ 6fa:	dd 24       	eor	r13, r13
+ 6fc:	da 94       	dec	r13
+ 6fe:	ed 2c       	mov	r14, r13
+ 700:	fd 2c       	mov	r15, r13
+ 702:	f0 2d       	mov	r31, r0
+	{
+		retcode = MB_PACKET_ERROR_CRC;
+	}
+
+	return retcode;
+}
+ 704:	c7 01       	movw	r24, r14
+ 706:	b6 01       	movw	r22, r12
+ 708:	df 91       	pop	r29
+ 70a:	cf 91       	pop	r28
+ 70c:	1f 91       	pop	r17
+ 70e:	0f 91       	pop	r16
+ 710:	ff 90       	pop	r15
+ 712:	ef 90       	pop	r14
+ 714:	df 90       	pop	r13
+ 716:	cf 90       	pop	r12
+ 718:	08 95       	ret
+
+0000071a <main>:
+
+
 
 int main(void)
 {
+ 71a:	cf 93       	push	r28
+ 71c:	df 93       	push	r29
+ 71e:	cd b7       	in	r28, 0x3d	; 61
+ 720:	de b7       	in	r29, 0x3e	; 62
+ 722:	27 97       	sbiw	r28, 0x07	; 7
+ 724:	cd bf       	out	0x3d, r28	; 61
+ 726:	de bf       	out	0x3e, r29	; 62
 	clock_setup();
- 332:	0e 94 28 01 	call	0x250	; 0x250 <clock_setup>
+ 728:	0e 94 bc 01 	call	0x378	; 0x378 <clock_setup>
     usart_setup();
- 336:	0e 94 14 01 	call	0x228	; 0x228 <usart_setup>
-
+ 72c:	0e 94 e0 01 	call	0x3c0	; 0x3c0 <usart_setup>
+	interrupt_setup();
+ 730:	0e 94 db 01 	call	0x3b6	; 0x3b6 <interrupt_setup>
+	ModbusDataStruct modbusStruct;
+	int32_t retcode = 0;
     while (1) 
     {
-		usart_rx_tx();
- 33a:	0e 94 89 01 	call	0x312	; 0x312 <usart_rx_tx>
- 33e:	fd cf       	rjmp	.-6      	; 0x33a <main+0x8>
+		if (dataRecived)
+ 734:	80 91 05 20 	lds	r24, 0x2005	; 0x802005 <dataRecived>
+ 738:	88 23       	and	r24, r24
+ 73a:	e1 f3       	breq	.-8      	; 0x734 <main+0x1a>
+		{
+			dataRecived = 0;
+ 73c:	10 92 05 20 	sts	0x2005, r1	; 0x802005 <dataRecived>
+			parse_modbus_data(modbusData, &modbusStruct);
+ 740:	be 01       	movw	r22, r28
+ 742:	6f 5f       	subi	r22, 0xFF	; 255
+ 744:	7f 4f       	sbci	r23, 0xFF	; 255
+ 746:	86 e0       	ldi	r24, 0x06	; 6
+ 748:	90 e2       	ldi	r25, 0x20	; 32
+ 74a:	0e 94 54 02 	call	0x4a8	; 0x4a8 <parse_modbus_data>
+			USARTF0.DATA = modbusStruct.regQuantity;
+ 74e:	8d 81       	ldd	r24, Y+5	; 0x05
+ 750:	80 93 a0 0b 	sts	0x0BA0, r24	; 0x800ba0 <__TEXT_REGION_LENGTH__+0x7deba0>
+			retcode = modbus_process(&modbusStruct, modbusDataPok, &dataLength);
+ 754:	60 91 02 20 	lds	r22, 0x2002	; 0x802002 <modbusDataPok>
+ 758:	70 91 03 20 	lds	r23, 0x2003	; 0x802003 <modbusDataPok+0x1>
+ 75c:	44 e0       	ldi	r20, 0x04	; 4
+ 75e:	50 e2       	ldi	r21, 0x20	; 32
+ 760:	ce 01       	movw	r24, r28
+ 762:	01 96       	adiw	r24, 0x01	; 1
+ 764:	0e 94 f0 02 	call	0x5e0	; 0x5e0 <modbus_process>
+ 768:	e5 cf       	rjmp	.-54     	; 0x734 <main+0x1a>
 
-00000340 <_exit>:
- 340:	f8 94       	cli
+0000076a <_exit>:
+ 76a:	f8 94       	cli
 
-00000342 <__stop_program>:
- 342:	ff cf       	rjmp	.-2      	; 0x342 <__stop_program>
+0000076c <__stop_program>:
+ 76c:	ff cf       	rjmp	.-2      	; 0x76c <__stop_program>

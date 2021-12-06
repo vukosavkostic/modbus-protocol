@@ -10,7 +10,12 @@ main.d main.o: .././main.c \
  d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\xmega.h \
  d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
- d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h
+ d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
+ d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h \
+ d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\delay.h \
+ d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
+ d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
+ d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h
 
 d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -35,3 +40,13 @@ d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\xmega.h
 d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h:
 
 d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
+
+d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h:
+
+d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\delay.h:
+
+d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h:
+
+d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h:
+
+d:\microchipstudio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
